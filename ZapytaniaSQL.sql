@@ -28,7 +28,7 @@ or [Procent_wykonania]>100
 --ze wszystkich przeprowadzonych przez nich sprintów, sortujemy ich po
 --œredniej rosn¹co i wyœwietlamy 3 pozycje.
 
-select l.Imie_i_nazwisko ,l.Numer_pracownika ,AVG(s.Liczba_bledow_na_wdrozenie) as [srednia liczba bledow na wdrozenie]  from [dbo].[Sprint] as s
+select TOP(3) l.Imie_i_nazwisko ,l.Numer_pracownika ,AVG(s.Liczba_bledow_na_wdrozenie) as [srednia liczba bledow na wdrozenie]  from [dbo].[Sprint] as s
 join [dbo].[Ludzie] as l on s.ID_Scrum_Master=l.ID_Osoby
 group by  l.Imie_i_nazwisko ,l.Numer_pracownika
 order by  AVG(s.Liczba_bledow_na_wdrozenie)
@@ -47,16 +47,49 @@ group by W.ID_Zadania
 --ID_typu w tabeli faktu, dla typów frontendowego i backendowego obliczamy
 --œredni¹ z ro¿nicy rzeczywistego oraz estymowanego czasu wykonania i je
 --porównujemy
+select AVG(W.[Estymacja_zadania]-W.[Czas_wykonania]),T.Typ from [dbo].[Wykonanie_zadania] as W
+join Typ as T on T.ID_Typu=W.ID_Typ
+group by T.Typ
+
+--Podaj mi zale¿noœæ profitu z zakoñczonych produktów w danym miesi¹cu w
+--porównaniu do zesz³ego roku.(3)
 --6. Datê oraz profit pobieramy z tabeli FACT Product Backlog.
---7. Sumujemy iloœæ commitów dla ka¿dego z pracowników oraz dzielimy je w
---stosunku do daty zawartej jako klucz obcy w tabeli FACT Sprint (ID_Koniec)
+--Podaj mi pracownika, który wykona³ najwiêksz¹ iloœæ commitów wg miesiêcy
+--(4)
+select max(W1.Liczba_committow) as [max  number of commits] , D.Rok ,D.Miesiac,L.Imie_i_nazwisko from  [dbo].[Ludzie] as L
+join [dbo].[Wykonanie_zadania] as W1 on L.ID_Osoby=W1.ID_osoby
+join [dbo].[Sprint] as S on S.ID_Sprint=W1.ID_Sprintu
+join [dbo].[Data] as D on D.ID_Daty = S.ID_Poczatek
+group by D.Rok ,D.Miesiac ,L.Imie_i_nazwisko 
+
+--7.
+create view B as
+select sum(PB.Profit) as Profit_suma , D.Rok , D.Miesiac from Product_Backlog as PB
+join Data as D on D.ID_Daty = PB.ID_Poczatek
+group by D.Rok , D.Miesiac
+select * from B as C
+join B as A on C.Rok  = A.Rok AND A.Miesiac = C.Miesiac-1 
+
 --8. Sumujemy status “nie wykonany” z tabeli wymiaru DIM_Status na przeciêciu
 --z tabel¹ DIM_Typ
-select COUNT(*) from [dbo].[Wykonanie_zadania] as W
+select COUNT(*) as [ile zadan nie zostalo wykonanych] from [dbo].[Wykonanie_zadania] as W
 join [dbo].[Status] as T on T.ID_Status = W.ID_Status
 where T.Status = 'Nieukonczone'
 
 --9. Sumujemy profit z Tabeli FACT_Product_Backlog oraz dzielimy go na liczbê
 --dni miêdzy pocz¹tkiem a zakoñczeniem Product Backlogu.
+SELECT TOP(3) P.nazwa, (PB.Profit/((DATEDIFF(DD,D1.Data ,D2.Data )))) as 'Profit na dzien'  from Product_backlog as PB
+join Produkt as P on PB.ID_product=P.ID_produkt
+join Data as D1 on PB.ID_Poczatek=D1.ID_Daty
+join Data as D2 on PB.ID_Koniec=D2.ID_Daty
+where PB.ID_Koniec is not null
+--group by P.nazwa
+order by 'Profit na dzien'
+
+
 --10.Sektor Gospodarki znajdziemy w tabeli DIM_Firma a koszty produktów w
 --FACT Product Backlog.
+SELECT SUM(PB.Profit) as profit, F.Sektor_Gospodarki as Sektor_Gospodarki from Product_Backlog as PB
+join [dbo].[Firma] as F on F.ID_Firma = PB.ID_Firmy 
+where ID_Koniec is not null
+group by F.Sektor_Gospodarki
