@@ -16,7 +16,7 @@ LOAD DATA INPATH '/tmp/data/SampleData3.txt' OVERWRITE INTO TABLE Produkt;
 
 create external table Product_Backlog (ID_Product_Backlog int, ID_Product int, ID_Deadline int, ID_Poczatek int, ID_Koniec int, ID_Firmy int, Koszt double, Cena double, Profit double, liczba_zadan int) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' STORED AS TEXTFILE;
 create external table Sprint (ID_Sprint int,ID_Product_Backlog int, ID_Poczatek int, ID_Product int, ID_Koniec int, ID_Scrum_Master int, Planowana_objetosc double, Rzeczywista_objetosc double, Procent_wykonania double, Liczba_bledow_na_wdrozenie int, Planowana_liczba_ceremonii int, Finalna_liczba_ceremonii int) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' STORED AS TEXTFILE;
-create external table Wykonanie_zadania (ID_Wykonanie_zadania int, ID_Sprintu int, ID_Status int, ID_Zadania int,ID_Typ int, Czas_wykonania double, Estymacja_zadania double, Liczba_committow int, Liczba_zmienionych_plikow int, Liczba_zmienionych_linijek_kodu int) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' STORED AS TEXTFILE;
+create external table Wykonanie_zadania (ID_Wykonanie_zadania int, ID_Sprintu int, ID_Status int, ID_Zadania int,ID_Typ int, Czas_wykonania double, Estymacja_zadania double, Liczba_committow int, Liczba_zmienionych_plikow int, Liczba_zmienionych_linijek_kodu int, ID_Osoby int) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' STORED AS TEXTFILE;
 
 
 
