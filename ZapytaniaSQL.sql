@@ -17,11 +17,11 @@ and PB1.liczba_zadan>PB2.liczba_zadan
 --czy zdarzyło się przekroczenie objętości planowanej dla sprintu [Tabela
 --FACT_Sprint] gdzie procent wykonania musiałby być większy niż 100
 
-select F.Sektor_Gospodarki , S.ID_Sprint from Sprint as S
-join [dbo].[Product_Backlog] as PB on S.[ID_Product_Backlog]=PB.ID_Product_Backlog
-join [dbo].[Firma] as F on F.ID_Firma = PB.ID_Firmy 
-where [Rzeczywista_objetosc]>[Planowana_objetosc]
-or [Procent_wykonania]>100
+select F.Sektor_Gospodarki , S.ID_Sprint from sprint as S
+join dbo.product_backlog as PB on S.ID_Product_Backlog=PB.ID_Product_Backlog
+join dbo.firma as F on F.ID_Firma = PB.ID_Firmy 
+where Rzeczywista_objetosc>Planowana_objetosc
+or Procent_wykonania>100
 --3.
 --Filtrujemy sprinty po Scrummasterach korzystając z ID_Scrum_Master,,
 --następnie dla każdego z nich wyznaczamy średnią liczbę błędów na wdrożenie
@@ -38,17 +38,17 @@ order by  AVG(s.Liczba_bledow_na_wdrozenie)
 --na podstawie różnicy między estymowanym a rzeczywistym czasem
 --wykonania kazdego zadania wyliczamy ich średnią.
 
-select AVG(W.[Estymacja_zadania]-W.[Czas_wykonania]), W.ID_Zadania from [dbo].[Wykonanie_zadania] as W
-join Typ as T on T.ID_Typu=W.ID_Typ
-where T.Typ = 'Fortend'
-group by W.ID_Zadania
+select AVG(wykonanie_zadania.estymacja_zadania-wykonanie_zadania.czas_wykonania), wykonanie_zadania.id_zadania from wykonanie_zadania
+join typ on typ.id_typu=wykonanie_zadania.id_typ
+where typ.typ = 'Fortend'
+group by wykonanie_zadania.id_zadania
 
 --5. Filtrujemy zadania po ich typie korzystając z tabeli wymiarów Typ oraz
 --ID_typu w tabeli faktu, dla typów frontendowego i backendowego obliczamy
 --średnią z rożnicy rzeczywistego oraz estymowanego czasu wykonania i je
 --porównujemy
-select AVG(W.[Estymacja_zadania]-W.[Czas_wykonania]),T.Typ from [dbo].[Wykonanie_zadania] as W
-join Typ as T on T.ID_Typu=W.ID_Typ
+select AVG(W.[Estymacja_zadania]-W.[Czas_wykonania]),T.Typ from [dbo].[Wykonanie_zadania] W
+join Typ T on T.ID_Typu=W.ID_Typ
 group by T.Typ
 
 --Podaj mi zależność profitu z zakończonych produktów w danym miesiącu w
