@@ -6,7 +6,7 @@
 --podstawie miary Liczba_zadań
 --PB1 to ten nowszy
 select PB1.ID_Poczatek , PB2.ID_Poczatek , P.nazwa from Product_backlog as PB1
-join Produkt as P on PB1.ID_product=P.ID_produkt
+join Produkt1 as P on PB1.ID_product=P.ID_produkt
 join Product_backlog as PB2 on PB2.ID_product=P.ID_produkt
 where PB1.ID_Product_Backlog!= PB2.ID_Product_Backlog
 and PB1.ID_Poczatek > PB2.ID_Poczatek
@@ -92,7 +92,7 @@ where T.Status = 'Nieukonczone'
 --9. Sumujemy profit z Tabeli FACT_Product_Backlog oraz dzielimy go na liczbę
 --dni między początkiem a zakończeniem Product Backlogu.
 SELECT TOP(3) P.nazwa, (PB.Profit/((DATEDIFF(DD,D1.Data ,D2.Data )))) as 'Profit na dzien'  from Product_backlog as PB
-join Produkt as P on PB.ID_product=P.ID_produkt
+join Produkt1 as P on PB.ID_product=P.ID_produkt
 join Data as D1 on PB.ID_Poczatek=D1.ID_Daty
 join Data as D2 on PB.ID_Koniec=D2.ID_Daty
 where PB.ID_Koniec is not null
