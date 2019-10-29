@@ -57,28 +57,28 @@ group by t.typ
 --Podaj mi pracownika, który wykonał największą ilość commitów wg miesięcy
 --(4)
 create view widok as
-  SELECT MAX(w1.Liczba_committow) AS [max  number of commits], d.rok, d.miesiac, l.imie_i_nazwisko
+  SELECT MAX(w1.Liczba_committow) AS max_number_of_commits, d.rok, d.miesiac, l.imie_i_nazwisko
 FROM     ludzie AS l  JOIN
                   wykonanie_zadania AS w1 ON l.id_osoby = w1.id_osoby  JOIN
-                  dbo.Sprint AS S ON S.ID_Sprint = W1.ID_Sprintu  JOIN
-                  dbo.Data AS D ON D.ID_Daty = S.ID_Poczatek
-GROUP BY D.Rok, D.Miesiac, L.Imie_i_nazwisko
-  select Widok.Imie_i_nazwisko ,[max  number of commits] , rok_max.Rok , rok_max.Miesiac from (select max([max  number of commits]) as maks ,[Rok],[Miesiac]
-  from [Hadoop].[dbo].[widok] group by  [Rok],[Miesiac])  rok_max , widok
-  where widok.[max  number of commits] = rok_max.maks and rok_max.Miesiac=widok.Miesiac and rok_max.Rok=widok.Rok
+                  dbo.Sprint AS S ON S.ID_Sprint = w1.id_sprintu  JOIN
+                  dbo.data AS d ON d.id_daty = s.id_poczatek
+GROUP BY d.rok, d.miesiac, l.imie_i_nazwisko
+  select widok.Imie_i_nazwisko ,max_number_of_commits, rok_max.rok , rok_max.miesiac from (select max([max  number of commits]) as maks ,rok,miesiac
+  from widok group by  rok,miesiac)  rok_max , widok
+  where widok.max_number_of_commits = rok_max.maks and rok_max.miesiac=widok.miesiac and rok_max.rok=widok.rok
                                                
                                                
                                                
-select max(W1.Liczba_committow) as [max  number of commits] , D.Rok ,D.Miesiac,L.Imie_i_nazwisko from  [dbo].[Ludzie] as L
-join [dbo].[Wykonanie_zadania] as W1 on L.ID_Osoby=W1.ID_osoby
-join [dbo].[Sprint] as S on S.ID_Sprint=W1.ID_Sprintu
-join [dbo].[Data] as D on D.ID_Daty = S.ID_Poczatek
-group by D.Rok ,D.Miesiac ,L.Imie_i_nazwisko 
+select max(w1.Liczba_committow) as [max  number of commits] , d.rok ,d.miesiac,l.imie_i_nazwisko from  ludzie as l
+join wykonanie_zadania as w1 on l.id_osoby=w1.id_osoby
+join sprint as s on s.id_sprint=w1.id_Sprintu
+join data as d on d.id_daty = s.id_poczatek
+group by d.rok ,d.miesiac ,l.imie_i_nazwisko 
 
 --7.
-create view B as
-select sum(PB.Profit) as Profit_suma , D.Rok , D.Miesiac from Product_Backlog as PB
-join Data as D on D.ID_Daty = PB.ID_Poczatek
+create view b as
+select sum(pb.profit) as profit_suma , d.rok , d.miesiac from product_backlog as pb
+join Data as D on D.ID_Daty = PB.id_poczatek
 group by D.Rok , D.Miesiac
 select * from B as C
 join B as A on C.Rok  = A.Rok AND A.Miesiac = C.Miesiac-1 
