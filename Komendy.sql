@@ -13,14 +13,14 @@ COLLECTION ITEMS TERMINATED BY '#'
 MAP KEYS TERMINATED BY '@'
 STORED AS TEXTFILE;
 LOAD DATA INPATH '/user/maria_dev/Produkt.txt' OVERWRITE INTO TABLE Produkt1;
-LOAD DATA INPATH '/user/maria_dev/Produkt.txt' OVERWRITE INTO TABLE Produkt1;
-LOAD DATA INPATH '/user/maria_dev/Produkt.txt' OVERWRITE INTO TABLE Produkt1;
-LOAD DATA INPATH '/user/maria_dev/Produkt.txt' OVERWRITE INTO TABLE Produkt1;
-LOAD DATA INPATH '/user/maria_dev/Produkt.txt' OVERWRITE INTO TABLE Produkt1;
-LOAD DATA INPATH '/user/maria_dev/Produkt.txt' OVERWRITE INTO TABLE Produkt1;
-LOAD DATA INPATH '/user/maria_dev/Produkt.txt' OVERWRITE INTO TABLE Produkt1;
-LOAD DATA INPATH '/user/maria_dev/Produkt.txt' OVERWRITE INTO TABLE Produkt1;
-LOAD DATA INPATH '/user/maria_dev/Produkt.txt' OVERWRITE INTO TABLE Produkt1;
+LOAD DATA INPATH '/user/maria_dev/Backlog.txt' OVERWRITE INTO TABLE Product_Backlog;
+LOAD DATA INPATH '/user/maria_dev/Data.txt' OVERWRITE INTO TABLE Data;
+LOAD DATA INPATH '/user/maria_dev/Firma.txt' OVERWRITE INTO TABLE Firma;
+LOAD DATA INPATH '/user/maria_dev/Ludzie.txt' OVERWRITE INTO TABLE Ludzie;
+LOAD DATA INPATH '/user/maria_dev/sprint2.txt' OVERWRITE INTO TABLE Sprint;
+LOAD DATA INPATH '/user/maria_dev/Status.txt' OVERWRITE INTO TABLE Status;
+LOAD DATA INPATH '/user/maria_dev/Typ.txt' OVERWRITE INTO TABLE Typ;
+LOAD DATA INPATH '/user/maria_dev/Zadania.txt' OVERWRITE INTO TABLE Wykonanie_zadania;
 
 
 
