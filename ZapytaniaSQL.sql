@@ -47,9 +47,9 @@ group by wykonanie_zadania.id_zadania
 --ID_typu w tabeli faktu, dla typów frontendowego i backendowego obliczamy
 --średnią z rożnicy rzeczywistego oraz estymowanego czasu wykonania i je
 --porównujemy
-select AVG(W.[Estymacja_zadania]-W.[Czas_wykonania]),T.Typ from [dbo].[Wykonanie_zadania] W
-join Typ T on T.ID_Typu=W.ID_Typ
-group by T.Typ
+select AVG(w.estymacja_zadania-w.czas_wykonania),t.typ from wykonanie_zadania w
+join typ t on t.id_typu=w.id_typ
+group by t.typ
 
 --Podaj mi zależność profitu z zakończonych produktów w danym miesiącu w
 --porównaniu do zeszłego roku.(3)
@@ -57,10 +57,10 @@ group by T.Typ
 --Podaj mi pracownika, który wykonał największą ilość commitów wg miesięcy
 --(4)
 create view widok as
-  SELECT MAX(W1.Liczba_committow) AS [max  number of commits], D.Rok, D.Miesiac, L.Imie_i_nazwisko
-FROM     dbo.Ludzie AS L INNER JOIN
-                  dbo.Wykonanie_zadania AS W1 ON L.ID_Osoby = W1.ID_osoby INNER JOIN
-                  dbo.Sprint AS S ON S.ID_Sprint = W1.ID_Sprintu INNER JOIN
+  SELECT MAX(w1.Liczba_committow) AS [max  number of commits], d.rok, d.miesiac, l.imie_i_nazwisko
+FROM     ludzie AS l  JOIN
+                  wykonanie_zadania AS w1 ON l.id_osoby = w1.id_osoby  JOIN
+                  dbo.Sprint AS S ON S.ID_Sprint = W1.ID_Sprintu  JOIN
                   dbo.Data AS D ON D.ID_Daty = S.ID_Poczatek
 GROUP BY D.Rok, D.Miesiac, L.Imie_i_nazwisko
   select Widok.Imie_i_nazwisko ,[max  number of commits] , rok_max.Rok , rok_max.Miesiac from (select max([max  number of commits]) as maks ,[Rok],[Miesiac]
