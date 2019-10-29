@@ -6,13 +6,23 @@ create table Data (ID_Daty int, Data Date, Rok Int, Miesiac int, Dzien int ) ROW
 
 create table Produkt (ID_Produkt int, ID_Product_Owner int, nazwa STRING) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' STORED AS TEXTFILE;
 
-create table Produkt (ID_Produkt int, ID_Product_Owner int, nazwa STRING, inne MAP<STRING,STRING>) 
+create table Produkt1 (ID_Produkt int, ID_Product_Owner int, nazwa STRING, inne MAP<STRING,STRING>) 
 ROW FORMAT DELIMITED 
 FIELDS TERMINATED BY ',' 
 COLLECTION ITEMS TERMINATED BY '#'
 MAP KEYS TERMINATED BY '@'
 STORED AS TEXTFILE;
-LOAD DATA INPATH '/tmp/data/SampleData3.txt' OVERWRITE INTO TABLE Produkt;
+LOAD DATA INPATH '/user/maria_dev/Produkt.txt' OVERWRITE INTO TABLE Produkt1;
+LOAD DATA INPATH '/user/maria_dev/Produkt.txt' OVERWRITE INTO TABLE Produkt1;
+LOAD DATA INPATH '/user/maria_dev/Produkt.txt' OVERWRITE INTO TABLE Produkt1;
+LOAD DATA INPATH '/user/maria_dev/Produkt.txt' OVERWRITE INTO TABLE Produkt1;
+LOAD DATA INPATH '/user/maria_dev/Produkt.txt' OVERWRITE INTO TABLE Produkt1;
+LOAD DATA INPATH '/user/maria_dev/Produkt.txt' OVERWRITE INTO TABLE Produkt1;
+LOAD DATA INPATH '/user/maria_dev/Produkt.txt' OVERWRITE INTO TABLE Produkt1;
+LOAD DATA INPATH '/user/maria_dev/Produkt.txt' OVERWRITE INTO TABLE Produkt1;
+LOAD DATA INPATH '/user/maria_dev/Produkt.txt' OVERWRITE INTO TABLE Produkt1;
+
+
 
 create external table Product_Backlog (ID_Product_Backlog int, ID_Product int, ID_Deadline int, ID_Poczatek int, ID_Koniec int, ID_Firmy int, Koszt double, Cena double, Profit double, liczba_zadan int) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' STORED AS TEXTFILE;
 create external table Sprint (ID_Sprint int,ID_Product_Backlog int, ID_Poczatek int, ID_Product int, ID_Koniec int, ID_Scrum_Master int, Planowana_objetosc double, Rzeczywista_objetosc double, Procent_wykonania double, Liczba_bledow_na_wdrozenie int, Planowana_liczba_ceremonii int, Finalna_liczba_ceremonii int) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' STORED AS TEXTFILE;
