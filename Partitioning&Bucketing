@@ -1,0 +1,40 @@
+create table product_backlog_stat_part(id_product_backlog int, id_deadline int, id_poczatek int, id_koniec int, id_firmy int, koszt double, cena double, profit double, liczba_zadan int) partitioned by (id_product int)  row format delimited fields terminated by ',';
+
+insert into table product_backlog_stat_part partition(id_product=1) 
+select id_product_backlog,id_deadline,id_poczatek,id_koniec,id_firmy,koszt, cena, profit, liczba_zadan 
+from product_backlog where id_product=1;
+
+insert into table product_backlog_stat_part partition(id_product=2) 
+select id_product_backlog,id_deadline,id_poczatek,id_koniec,id_firmy,koszt, cena, profit, liczba_zadan 
+from product_backlog where id_product=2;
+
+insert into table product_backlog_stat_part partition(id_product=3) 
+select id_product_backlog,id_deadline,id_poczatek,id_koniec,id_firmy,koszt, cena, profit, liczba_zadan 
+from product_backlog where id_product=3;
+
+set hive.exec.dynamic.partition=true;
+set hive.exec.dynamic.partition.mode=nonstrict;
+set hive.exec.max.dynamic.partitions=1000;
+set hive.exec.max.dynamic.partitions.pernode=100;
+
+
+
+create table sprint_dyn_part (id_sprint int,id_product_backlog int, id_poczatek int, id_product int, id_koniec int, planowana_objetosc double, rzeczywista_objetosc double, procent_wykonania double, liczba_bledow_na_wdrozenie int, planowana_liczba_ceremonii int, finalna_liczba_ceremonii int) partitioned by (id_scrum_master int) row format delimited fields terminated by ',';
+
+
+
+
+insert into table sprint_dyn_part partition(id_scrum_master) select id_sprint ,id_product_backlog , id_poczatek , id_product , id_koniec , planowana_objetosc , rzeczywista_objetosc , procent_wykonania , liczba_bledow_na_wdrozenie , planowana_liczba_ceremonii , finalna_liczba_ceremonii ,id_scrum_master  from sprint;
+
+
+
+create external table wykonanie_zadania_bucket (id_wykonanie_zadania int, id_sprintu int, id_status int, id_zadania int,id_typ int, czas_wykonania double, estymacja_zadania double, liczba_committow int, liczba_zmienionych_plikow int, liczba_zmienionych_linijek_kodu int, id_osoby int) row format delimited fields terminated by ',' stored as textfile;
+ 
+ set hive.enforce.bucketing = true;
+LOAD DATA INPATH '/user/maria_dev/zadania.txt' OVERWRITE INTO TABLE wykonanie_zadania_bucket;
+
+ 
+create table wykonanie_zadania_bucket1 (id_wykonanie_zadania int, id_sprintu int, id_status int, id_zadania int,id_typ int, czas_wykonania double, estymacja_zadania double, liczba_committow int, liczba_zmienionych_plikow int, liczba_zmienionych_linijek_kodu int, id_osoby int) CLUSTERED BY (id_osoby) INTO 5 BUCKETS STORED AS SEQUENCEFILE;
+
+
+INSERT INTO TABLE wykonanie_zadania_bucket1 SELECT id_wykonanie_zadania , id_sprintu , id_status , id_zadania ,id_typ , czas_wykonania , estymacja_zadania , liczba_committow , liczba_zmienionych_plikow , liczba_zmienionych_linijek_kodu , id_osoby  FROM wykonanie_zadania_bucket;
