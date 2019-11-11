@@ -38,3 +38,6 @@ create table wykonanie_zadania_bucket1 (id_wykonanie_zadania int, id_sprintu int
 
 
 INSERT INTO TABLE wykonanie_zadania_bucket1 SELECT id_wykonanie_zadania , id_sprintu , id_status , id_zadania ,id_typ , czas_wykonania , estymacja_zadania , liczba_committow , liczba_zmienionych_plikow , liczba_zmienionych_linijek_kodu , id_osoby  FROM wykonanie_zadania_bucket;
+
+
+SELECT col_name FROM wykonanie_zadania_bucket1 TABLESAMPLE(BUCKET 2 out of 5 on bucket_col_name)
