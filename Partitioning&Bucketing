@@ -1,16 +1,48 @@
+  
+create table firma (id_firma int, nazwa_frimy string, sektor_gospodarki string) row format delimited fields terminated by ',' stored as textfile;
+create table ludzie (id_osoby int, imie_i_nazwisko string, numer_pracownika int) row format delimited fields terminated by ',' stored as textfile;
+create table typ (id_typu int, typ string) row format delimited fields terminated by ',' stored as textfile;
+create table status (id_status int, status string) row format delimited fields terminated by ',' stored as textfile;
+create table data (id_daty int, data date, rok int, miesiac int, dzien int ) row format delimited fields terminated by ',' stored as textfile;
+
+create table produkt (id_produkt int, id_product_owner int, nazwa string) row format delimited fields terminated by ',' stored as textfile;
+
+create table produkt1 (id_produkt int, id_product_owner int, nazwa string, inne map<string,string>) 
+row format delimited 
+fields terminated by ',' 
+collection items terminated by '#'
+map keys terminated by '@'
+stored as textfile;
+load data inpath '/user/maria_dev/produkt.txt' overwrite into table produkt1;
+load data inpath '/tmp/data/backlog.txt' overwrite into table backlog;
+load data inpath '/user/maria_dev/data.txt' overwrite into table data;
+load data inpath '/user/maria_dev/firma.txt' overwrite into table firma;
+load data inpath '/user/maria_dev/ludzie.txt' overwrite into table ludzie;
+load data inpath '/tmp/data/sprint2.txt' overwrite into table sprint;
+load data inpath '/user/maria_dev/status.txt' overwrite into table status;
+load data inpath '/user/maria_dev/typ.txt' overwrite into table typ;
+load data inpath '/user/maria_dev/zadania.txt' overwrite into table wykonanie_zadania;
+
+
+
+create external table backlog (id_product_backlog int, id_product int, id_deadline int, id_poczatek int, id_koniec int, id_firmy int, koszt double, cena double, profit double, liczba_zadan int) row format delimited fields terminated by ',' stored as textfile;
+create external table sprint (id_sprint int,id_product_backlog int, id_poczatek int, id_product int, id_koniec int, id_scrum_master int, planowana_objetosc double, rzeczywista_objetosc double, procent_wykonania double, liczba_bledow_na_wdrozenie int, planowana_liczba_ceremonii int, finalna_liczba_ceremonii int) row format delimited fields terminated by ',' stored as textfile;
+create external table wykonanie_zadania (id_wykonanie_zadania int, id_sprintu int, id_status int, id_zadania int,id_typ int, czas_wykonania double, estymacja_zadania double, liczba_committow int, liczba_zmienionych_plikow int, liczba_zmienionych_linijek_kodu int, id_osoby int) row format delimited fields terminated by ',' stored as textfile;
+
+
 create table product_backlog_stat_part(id_product_backlog int, id_deadline int, id_poczatek int, id_koniec int, id_firmy int, koszt double, cena double, profit double, liczba_zadan int) partitioned by (id_product int)  row format delimited fields terminated by ',';
 
 insert into table product_backlog_stat_part partition(id_product=1) 
 select id_product_backlog,id_deadline,id_poczatek,id_koniec,id_firmy,koszt, cena, profit, liczba_zadan 
-from product_backlog where id_product=1;
+from backlog where id_product=1;
 
 insert into table product_backlog_stat_part partition(id_product=2) 
 select id_product_backlog,id_deadline,id_poczatek,id_koniec,id_firmy,koszt, cena, profit, liczba_zadan 
-from product_backlog where id_product=2;
+from backlog where id_product=2;
 
 insert into table product_backlog_stat_part partition(id_product=3) 
 select id_product_backlog,id_deadline,id_poczatek,id_koniec,id_firmy,koszt, cena, profit, liczba_zadan 
-from product_backlog where id_product=3;
+from backlog where id_product=3;
 
 set hive.exec.dynamic.partition=true;
 set hive.exec.dynamic.partition.mode=nonstrict;
@@ -31,7 +63,7 @@ insert into table sprint_dyn_part partition(id_scrum_master) select id_sprint ,i
 create external table wykonanie_zadania_bucket (id_wykonanie_zadania int, id_sprintu int, id_status int, id_zadania int,id_typ int, czas_wykonania double, estymacja_zadania double, liczba_committow int, liczba_zmienionych_plikow int, liczba_zmienionych_linijek_kodu int, id_osoby int) row format delimited fields terminated by ',' stored as textfile;
  
  set hive.enforce.bucketing = true;
-LOAD DATA INPATH '/user/maria_dev/zadania.txt' OVERWRITE INTO TABLE wykonanie_zadania_bucket;
+LOAD DATA INPATH '/tmp/data/zadania.txt' OVERWRITE INTO TABLE wykonanie_zadania_bucket;
 
  
 create table wykonanie_zadania_bucket1 (id_wykonanie_zadania int, id_sprintu int, id_status int, id_zadania int,id_typ int, czas_wykonania double, estymacja_zadania double, liczba_committow int, liczba_zmienionych_plikow int, liczba_zmienionych_linijek_kodu int, id_osoby int) CLUSTERED BY (id_osoby) INTO 5 BUCKETS STORED AS SEQUENCEFILE;
@@ -40,4 +72,4 @@ create table wykonanie_zadania_bucket1 (id_wykonanie_zadania int, id_sprintu int
 INSERT INTO TABLE wykonanie_zadania_bucket1 SELECT id_wykonanie_zadania , id_sprintu , id_status , id_zadania ,id_typ , czas_wykonania , estymacja_zadania , liczba_committow , liczba_zmienionych_plikow , liczba_zmienionych_linijek_kodu , id_osoby  FROM wykonanie_zadania_bucket;
 
 
-SELECT col_name FROM wykonanie_zadania_bucket1 TABLESAMPLE(BUCKET 2 out of 5 on bucket_col_name)
+SELECT avg(czas_wykonania) FROM wykonanie_zadania_bucket1 TABLESAMPLE(BUCKET 2 out of 5 on id_osoby)
