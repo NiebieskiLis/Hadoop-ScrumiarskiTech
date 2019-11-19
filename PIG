@@ -9,5 +9,5 @@ r2 = LOAD 'pigproject.typ' USING org.apache.hive.hcatalog.pig.HCatLoader();
 r3 = FILTER r2 BY $1 = 'fortend'
 r4 = JOIN r3 BY $0 ,r1 BY $4
 r5 = GROUP r4 BY $0
-r6 = foreach r5 generate group, COUNT(a);
+r6 = foreach r5 generate group, AVG($6-$5);
 
