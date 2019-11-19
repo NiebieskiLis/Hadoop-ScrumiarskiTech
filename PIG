@@ -7,7 +7,7 @@ r3 = LOAD 'pigproject.sprint' USING org.apache.hive.hcatalog.pig.HCatLoader();
 r1 = LOAD 'pigproject.wykonanie_zadania' USING org.apache.hive.hcatalog.pig.HCatLoader();
 r2 = LOAD 'pigproject.typ' USING org.apache.hive.hcatalog.pig.HCatLoader();
 r3 = FILTER r2 BY $1 = 'fortend'
-r4 = JOIN r3 BY $1 ,r1 BY $4
+r4 = JOIN r3 BY $0 ,r1 BY $4
 r5 = GROUP r4 BY $0
-r6 = 
+r6 = foreach r5 generate group, COUNT(a);
 
