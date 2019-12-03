@@ -1,17 +1,17 @@
-1)Create table in HBase
+1) Nasza tabela
 
-
-2) w HIVE tworzymy tabelę:
-
-CREATE EXTERNAL TABLE hbase_table_2(key int, value string) 
-STORED BY 'org.apache.hadoop.hive.hbase.HBaseStorageHandler'
-WITH SERDEPROPERTIES ("hbase.columns.mapping" = "cf1:val")
-TBLPROPERTIES("hbase.table.name" = "some_existing_table", "hbase.mapred.output.outputtable" = "some_existing_table");
-
-1) tworzymy tabelę i jej grupy kolumn:
-
- create 'projekty', 'opis_eventu' , 'daty' 
- 
 opis_eventu                                  | | daty   
  projekt | event_projektu |  project_manager | |date_from | date_to |
- 
+
+2)Create table in HBase
+
+create 'projekty', 'opis_eventu' , 'daty' 
+
+
+3) w HIVE tworzymy tabelę:
+
+CREATE EXTERNAL TABLE hbase_table_2(key string, projekt string, event_projektu string, project_manager int,date_from date, date_to date) 
+STORED BY 'org.apache.hadoop.hive.hbase.HBaseStorageHandler'
+WITH SERDEPROPERTIES ("hbase.columns.mapping" = ":key,opis_eventu:projekt , opis_eventu:event_projektu, opis_eventu:project_manager,daty:date_from , daty:date_to")
+TBLPROPERTIES("hbase.table.name" = "projekty", "hbase.mapred.output.outputtable" = "some_existing_table");
+
