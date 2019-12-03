@@ -1,17 +1,23 @@
 1) Nasza tabela
 
-opis_eventu                                  | | daty   
- projekt | event_projektu |  project_manager | |date_from | date_to |
+dane_projektu                                | | event_data   
+ projekt | event_projektu |  project_manager | |czas | ilosc_osob |
 
 2)Create table in HBase
 
-create 'projekty', 'opis_eventu' , 'daty' 
+create 'projekty', 'dane_projektu' , 'event_data' 
 
 
 3) w HIVE tworzymy tabelę:
 
-CREATE EXTERNAL TABLE hbase_table_2(key string, projekt string, event_projektu string, project_manager int,date_from date, date_to date) 
+CREATE EXTERNAL TABLE hbase_table_2(key string, projekt string, event_projektu string, project_manager int,czas int, ilosc_osob int) 
 STORED BY 'org.apache.hadoop.hive.hbase.HBaseStorageHandler'
-WITH SERDEPROPERTIES ("hbase.columns.mapping" = ":key,opis_eventu:projekt , opis_eventu:event_projektu, opis_eventu:project_manager,daty:date_from , daty:date_to")
+WITH SERDEPROPERTIES ("hbase.columns.mapping" = ":key,dane_projektu:projekt , dane_projektu:event_projektu, dane_projektu:project_manager,event_data:czas , event_data:ilosc_osob")
 TBLPROPERTIES("hbase.table.name" = "projekty");
+
+4)
+
+5)
+insert into hbase_table_2 select
+      
 
