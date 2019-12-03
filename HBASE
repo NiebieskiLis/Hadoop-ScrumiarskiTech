@@ -13,5 +13,5 @@ create 'projekty', 'opis_eventu' , 'daty'
 CREATE EXTERNAL TABLE hbase_table_2(key string, projekt string, event_projektu string, project_manager int,date_from date, date_to date) 
 STORED BY 'org.apache.hadoop.hive.hbase.HBaseStorageHandler'
 WITH SERDEPROPERTIES ("hbase.columns.mapping" = ":key,opis_eventu:projekt , opis_eventu:event_projektu, opis_eventu:project_manager,daty:date_from , daty:date_to")
-TBLPROPERTIES("hbase.table.name" = "projekty", "hbase.mapred.output.outputtable" = "some_existing_table");
+TBLPROPERTIES("hbase.table.name" = "projekty");
 
