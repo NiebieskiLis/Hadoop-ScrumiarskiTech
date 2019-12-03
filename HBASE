@@ -38,9 +38,8 @@ insert into hbase_table_2 select
       from pomocnicza
       
 7.
-scan 'projekty', {FILTER => "PrefixFilter('pomocnicza') AND FirstKeyOnlyFilter()"}
-scan 'projekty', {FILTER => "PrefixFilter('pomocnicza')", COLUMNS =>"info"}
-scan 'projekty', {ROWPREFIXFILTER => 'pomocnicza'}
+scan 'projekty',{STARTROW => '\'A\'', ENDROW=>'\'B\'''}
 
+scan 'projekty',{STARTROW => '\'A\'-2018-04-12', ENDROW=>'\'B\'-2018-07-12''}
 
  
