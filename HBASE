@@ -41,5 +41,5 @@ insert into hbase_table_2 select
 scan 'projekty',{STARTROW => '\'A\'', ENDROW=>'\'B\'''}
 
 scan 'projekty',{STARTROW => '\'A\'-2018-04-12', ENDROW=>'\'B\'-2018-07-12''}
-
+scan 'projekty', {STARTROW => '\'B\'' , REVERSED => TRUE, LIMIT => 1 }  
  
