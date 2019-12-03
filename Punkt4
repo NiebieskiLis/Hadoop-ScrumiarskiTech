@@ -1,4 +1,4 @@
-CREATE TABLE pomocnicza(projekt string, event_projektu string, project_manager int,czas int, ilosc_osob int, rok int, miesiac int, dzien int) 
+CREATE TABLE pomocnicza(projekt string, event_projektu string, project_manager int,czas int, ilosc_osob int, rok int, miesiac int, dzien int) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' STORED AS TEXTFILE; 
 
 LOAD DATA INPATH '/user/maria_dev/pomocnicza.txt' OVERWRITE INTO TABLE pomocnicza;
 A,1,1,14,2,2018,4,12
