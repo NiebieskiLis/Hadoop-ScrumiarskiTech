@@ -25,5 +25,5 @@ insert into hbase_table_2 select
       project_manager,
       czas,
       ilosc_osob
-      from pomocnicza2
+      from pomocnicza3
  
