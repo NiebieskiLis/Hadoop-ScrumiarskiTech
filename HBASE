@@ -19,5 +19,11 @@ TBLPROPERTIES("hbase.table.name" = "projekty");
 
 5)
 insert into hbase_table_2 select
-      
-
+      concat(projekt,'-',cast(cast(concat(rok,'-',miesiac,'-',dzien) AS DATE) AS STRING)) key,
+      projekt,
+      event_projektu,
+      project_manager,
+      czas,
+      ilosc_osob
+      from pomocnicza
+ 
