@@ -16,6 +16,16 @@ WITH SERDEPROPERTIES ("hbase.columns.mapping" = ":key,dane_projektu:projekt , da
 TBLPROPERTIES("hbase.table.name" = "projekty");
 
 4)
+CREATE TABLE pomocnicza(projekt string, event_projektu string, project_manager int,czas int, ilosc_osob int, rok int, miesiac int, dzien int) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' STORED AS TEXTFILE; 
+
+LOAD DATA INPATH '/user/maria_dev/pomocnicza.txt' OVERWRITE INTO TABLE pomocnicza;
+
+A,1,1,14,2,2018,4,12
+A,2,2,10,5,2018,5,12
+A,3,2,15,3,2018,6,12
+B,1,1,5,4,2018,7,12
+B,2,2,7,4,2018,8,12
+
 
 5)
 insert into hbase_table_2 select
@@ -25,5 +35,12 @@ insert into hbase_table_2 select
       project_manager,
       czas,
       ilosc_osob
-      from pomocnicza3
+      from pomocnicza
+      
+7.
+scan 'projekty', {FILTER => "PrefixFilter('pomocnicza') AND FirstKeyOnlyFilter()"}
+scan 'projekty', {FILTER => "PrefixFilter('pomocnicza')", COLUMNS =>"info"}
+scan 'projekty', {ROWPREFIXFILTER => 'pomocnicza'}
+
+
  
