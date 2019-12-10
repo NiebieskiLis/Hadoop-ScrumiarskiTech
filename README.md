@@ -5,7 +5,10 @@ Ma on na celu stworzenie Hurtowni Danych, która przechowuje dane dot. przebiegu
 Sprint , Produkt Backlog , Wykonanie zadania oraz tabele wymiaru 
 Jest to nierealcyjna baza danych utworzona w systemie Hadoop. Następnie uczymy się korzystania innych jego części takich jak :
 
--> HIVE
--> HBASE
--> PIG
--> KYLIN
+- HIVE
+
+- HBASE
+
+- PIG
+
+- KYLIN
