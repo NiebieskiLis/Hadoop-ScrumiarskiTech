@@ -10,8 +10,5 @@ create producer
  in hive :
  
  create table 
- create external table kafkaevents (id_typu int, typ string) stored by
-'org.apache.hadoop.hive.kafka.kafkastoragehandler'
-tblproperties
-("kafka.topic"="hello-kafka","kafka.bootstrap.servers"="sandbox-hdp.hortonworks.com:6667");
+ create external table kafkaevents (id_typu int, typ string) stored by 'org.apache.hadoop.hive.kafka.kafkastoragehandler' tblproperties ("kafka.topic"="hello-kafka","kafka.bootstrap.servers"="sandbox-hdp.hortonworks.com:6667");
 
