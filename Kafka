@@ -2,15 +2,16 @@
 create topic
 
 
- ./kafka-topics.sh --zookeeper localhost:2181 --create --replication-factor 1 --partitions 1 --topic Hello-Kafka
+ ./kafka-topics.sh --zookeeper localhost:2181 --create --replication-factor 1 --partitions 1 --topic hello-kafka
 
 create producer 
- ./kafka-console-producer.sh --broker-list PLAINTEXT://sandbox-hdp.hortonworks.com:6667 --topic Hello-Kafka
+ ./kafka-console-producer.sh --broker-list plaintext://sandbox-hdp.hortonworks.com:6667 --topic hello-kafka
  
  in hive :
  
  create table 
- CREATE EXTERNAL TABLE kafkaEvents (msg string) STORED BY
-'org.apache.hadoop.hive.kafka.KafkaStorageHandler'
-TBLPROPERTIES
-("kafka.topic"="Hello-Kafka","kafka.bootstrap.servers"="sandbox-hdp.hortonworks.com:6667");
+ create external table kafkaevents (id_typu int, typ string) stored by
+'org.apache.hadoop.hive.kafka.kafkastoragehandler'
+tblproperties
+("kafka.topic"="hello-kafka","kafka.bootstrap.servers"="sandbox-hdp.hortonworks.com:6667");
+
