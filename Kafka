@@ -16,3 +16,9 @@ CREATE EXTERNAL TABLE typ (id_typu int, typ string) STORED BY
 'org.apache.hadoop.hive.kafka.KafkaStorageHandler'
 TBLPROPERTIES
 ("kafka.topic"="Hello-Kafka","kafka.bootstrap.servers"="sandbox-hdp.hortonworks.com:6667");
+
+{“msg”:”Hallo1”}.
+
+{"id_typu":1,"typ":"Fortend"}
+{"id_typu":2,"typ":"Backend"}
+{"id_typu":3,"typ":"Full-Stack"}
