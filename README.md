@@ -12,3 +12,5 @@ Jest to nierealcyjna baza danych utworzona w systemie Hadoop. Następnie uczymy 
 - PIG
 
 - KYLIN
+
+-KAFKA
