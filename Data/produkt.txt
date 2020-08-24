@@ -1,0 +1,2 @@
+1,5,MAC OS,trudnosc@bardzo trudny#obszar@systemy operacyjne
+2,4,Okno,typ@Systemu Windows
